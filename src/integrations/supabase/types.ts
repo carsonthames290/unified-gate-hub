@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      portal_credentials: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          expires_at: string | null
+          id: string
+          label: string
+          last_used_at: string | null
+          password_hash: string
+          permissions: string[]
+          session_version: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          expires_at?: string | null
+          id?: string
+          label?: string
+          last_used_at?: string | null
+          password_hash: string
+          permissions?: string[]
+          session_version?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          expires_at?: string | null
+          id?: string
+          label?: string
+          last_used_at?: string | null
+          password_hash?: string
+          permissions?: string[]
+          session_version?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      portal_sections: {
+        Row: {
+          created_at: string
+          mode: string
+          name: string
+          slug: string
+          sort_order: number
+          source_url: string
+        }
+        Insert: {
+          created_at?: string
+          mode?: string
+          name: string
+          slug: string
+          sort_order?: number
+          source_url: string
+        }
+        Update: {
+          created_at?: string
+          mode?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          source_url?: string
+        }
+        Relationships: []
+      }
+      portal_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
