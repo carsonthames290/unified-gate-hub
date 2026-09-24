@@ -83,6 +83,10 @@ export function rewriteSourceUrls(text: string, section: Section, isHtml: boolea
     out = out.replace(/url\((["']?)\/(?!\/)/g, (m, q: string) => (m.includes(`/${slug}/`) ? m : `url(${q}/${slug}/~/`));
     // Neutralize <base href> so relative URLs resolve against our path
     out = out.replace(/<base\s[^>]*>/gi, "");
+    // Google Sites embeds its canonical page URL in its boot data and, when the
+    // host is not google.com, does location.replace() to it — which would loop
+    // forever on a proxy. Blank that single data field (it only drives that redirect).
+    out = out.replace(new RegExp(`null,"/${escapeRe(slug)}/[^"]*",null`, "g"), "null,null,null");
   }
   return out;
 }
