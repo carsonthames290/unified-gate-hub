@@ -10,33 +10,101 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SectionRouteImport } from './routes/$section'
+import { Route as EditorRouteImport } from './routes/editor'
+import { Route as SectionSplatRouteImport } from './routes/$section/$'
+import { Route as ApiGateLogoutRouteImport } from './routes/api/gate/logout'
+import { Route as ApiGateVerifyRouteImport } from './routes/api/gate/verify'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SectionRoute = SectionRouteImport.update({
+  id: '/$section',
+  path: '/$section',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorRoute = EditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SectionSplatRoute = SectionSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => SectionRoute,
+} as any)
+const ApiGateLogoutRoute = ApiGateLogoutRouteImport.update({
+  id: '/api/gate/logout',
+  path: '/api/gate/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGateVerifyRoute = ApiGateVerifyRouteImport.update({
+  id: '/api/gate/verify',
+  path: '/api/gate/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$section': typeof SectionRouteWithChildren
+  '/editor': typeof EditorRoute
+  '/$section/$': typeof SectionSplatRoute
+  '/api/gate/logout': typeof ApiGateLogoutRoute
+  '/api/gate/verify': typeof ApiGateVerifyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$section': typeof SectionRouteWithChildren
+  '/editor': typeof EditorRoute
+  '/$section/$': typeof SectionSplatRoute
+  '/api/gate/logout': typeof ApiGateLogoutRoute
+  '/api/gate/verify': typeof ApiGateVerifyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$section': typeof SectionRouteWithChildren
+  '/editor': typeof EditorRoute
+  '/$section/$': typeof SectionSplatRoute
+  '/api/gate/logout': typeof ApiGateLogoutRoute
+  '/api/gate/verify': typeof ApiGateVerifyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/$section'
+    | '/editor'
+    | '/$section/$'
+    | '/api/gate/logout'
+    | '/api/gate/verify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/$section'
+    | '/editor'
+    | '/$section/$'
+    | '/api/gate/logout'
+    | '/api/gate/verify'
+  id:
+    | '__root__'
+    | '/'
+    | '/$section'
+    | '/editor'
+    | '/$section/$'
+    | '/api/gate/logout'
+    | '/api/gate/verify'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SectionRoute: typeof SectionRouteWithChildren
+  EditorRoute: typeof EditorRoute
+  ApiGateLogoutRoute: typeof ApiGateLogoutRoute
+  ApiGateVerifyRoute: typeof ApiGateVerifyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +116,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$section': {
+      id: '/$section'
+      path: '/$section'
+      fullPath: '/$section'
+      preLoaderRoute: typeof SectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor': {
+      id: '/editor'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$section/$': {
+      id: '/$section/$'
+      path: '/$'
+      fullPath: '/$section/$'
+      preLoaderRoute: typeof SectionSplatRouteImport
+      parentRoute: typeof SectionRoute
+    }
+    '/api/gate/logout': {
+      id: '/api/gate/logout'
+      path: '/api/gate/logout'
+      fullPath: '/api/gate/logout'
+      preLoaderRoute: typeof ApiGateLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gate/verify': {
+      id: '/api/gate/verify'
+      path: '/api/gate/verify'
+      fullPath: '/api/gate/verify'
+      preLoaderRoute: typeof ApiGateVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface SectionRouteChildren {
+  SectionSplatRoute: typeof SectionSplatRoute
+}
+
+const SectionRouteChildren: SectionRouteChildren = {
+  SectionSplatRoute: SectionSplatRoute,
+}
+
+const SectionRouteWithChildren =
+  SectionRoute._addFileChildren(SectionRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SectionRoute: SectionRouteWithChildren,
+  EditorRoute: EditorRoute,
+  ApiGateLogoutRoute: ApiGateLogoutRoute,
+  ApiGateVerifyRoute: ApiGateVerifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
