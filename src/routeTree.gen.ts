@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectionRouteImport } from './routes/$section'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as SectionSplatRouteImport } from './routes/$section/$'
 import { Route as ApiGateLogoutRouteImport } from './routes/api/gate/logout'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const SectionRoute = SectionRouteImport.update({
   id: '/$section',
   path: '/$section',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditorRoute = EditorRouteImport.update({
@@ -50,6 +56,7 @@ const ApiGateVerifyRoute = ApiGateVerifyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$section': typeof SectionRouteWithChildren
+  '/admin': typeof AdminRoute
   '/editor': typeof EditorRoute
   '/$section/$': typeof SectionSplatRoute
   '/api/gate/logout': typeof ApiGateLogoutRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$section': typeof SectionRouteWithChildren
+  '/admin': typeof AdminRoute
   '/editor': typeof EditorRoute
   '/$section/$': typeof SectionSplatRoute
   '/api/gate/logout': typeof ApiGateLogoutRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$section': typeof SectionRouteWithChildren
+  '/admin': typeof AdminRoute
   '/editor': typeof EditorRoute
   '/$section/$': typeof SectionSplatRoute
   '/api/gate/logout': typeof ApiGateLogoutRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$section'
+    | '/admin'
     | '/editor'
     | '/$section/$'
     | '/api/gate/logout'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$section'
+    | '/admin'
     | '/editor'
     | '/$section/$'
     | '/api/gate/logout'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$section'
+    | '/admin'
     | '/editor'
     | '/$section/$'
     | '/api/gate/logout'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SectionRoute: typeof SectionRouteWithChildren
+  AdminRoute: typeof AdminRoute
   EditorRoute: typeof EditorRoute
   ApiGateLogoutRoute: typeof ApiGateLogoutRoute
   ApiGateVerifyRoute: typeof ApiGateVerifyRoute
@@ -121,6 +134,13 @@ declare module '@tanstack/react-router' {
       path: '/$section'
       fullPath: '/$section'
       preLoaderRoute: typeof SectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/editor': {
@@ -168,6 +188,7 @@ const SectionRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SectionRoute: SectionRouteWithChildren,
+  AdminRoute: AdminRoute,
   EditorRoute: EditorRoute,
   ApiGateLogoutRoute: ApiGateLogoutRoute,
   ApiGateVerifyRoute: ApiGateVerifyRoute,

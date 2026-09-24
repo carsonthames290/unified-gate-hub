@@ -142,3 +142,253 @@
     color: var(--color-foreground);
   }
 }
+
+/* ---------- Portal admin design system ---------- */
+:root {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --admin-bg: oklch(0.975 0.008 80);
+  --admin-ink: oklch(0.22 0.02 260);
+  --admin-panel: oklch(1 0 0);
+  --admin-line: oklch(0.9 0.01 80);
+  --admin-muted: oklch(0.52 0.02 260);
+  --admin-accent: oklch(0.52 0.16 45);
+  --admin-accent-ink: oklch(0.99 0 0);
+  --admin-ok: oklch(0.6 0.15 150);
+  --admin-danger: oklch(0.58 0.2 25);
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+.admin-shell {
+  background: var(--admin-bg);
+  color: var(--admin-ink);
+  font-family: var(--font-body);
+}
+.admin-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--admin-line);
+  background: var(--admin-panel);
+}
+.admin-main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+  display: grid;
+  gap: 1.5rem;
+}
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--admin-accent);
+  font-weight: 600;
+}
+.panel {
+  background: var(--admin-panel);
+  border: 1px solid var(--admin-line);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px oklch(0 0 0 / 4%);
+}
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.subpanel {
+  border: 1px dashed var(--admin-line);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+.muted {
+  color: var(--admin-muted);
+  font-size: 0.875rem;
+}
+.row {
+  border: 1px solid var(--admin-line);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+.row-disabled {
+  opacity: 0.6;
+}
+.edit-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+@media (min-width: 640px) {
+  .edit-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+}
+.field > span {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--admin-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.field input,
+.select {
+  border: 1px solid var(--admin-line);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--admin-panel);
+  font: inherit;
+  width: 100%;
+}
+.field input:focus,
+.select:focus {
+  outline: 2px solid var(--admin-accent);
+  outline-offset: 1px;
+}
+.select {
+  width: auto;
+}
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.check input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--admin-accent);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--admin-accent);
+  color: var(--admin-accent-ink);
+}
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.btn-outline {
+  border-color: var(--admin-line);
+  background: var(--admin-panel);
+  color: var(--admin-ink);
+}
+.btn-outline:hover:not(:disabled) {
+  background: var(--admin-bg);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--admin-ink);
+}
+.btn-ghost:hover {
+  background: var(--admin-bg);
+}
+.btn-danger {
+  border-color: color-mix(in oklch, var(--admin-danger) 40%, transparent);
+  color: var(--admin-danger);
+  background: var(--admin-panel);
+}
+.btn-danger:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--admin-danger) 8%, white);
+}
+.link {
+  color: var(--admin-accent);
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  font: inherit;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-line);
+  color: var(--admin-ink);
+}
+.tag-ok {
+  color: var(--admin-ok);
+  border-color: color-mix(in oklch, var(--admin-ok) 40%, transparent);
+}
+.tag-off {
+  color: var(--admin-danger);
+  border-color: color-mix(in oklch, var(--admin-danger) 40%, transparent);
+}
+.tag-accent {
+  color: var(--admin-accent);
+  border-color: color-mix(in oklch, var(--admin-accent) 40%, transparent);
+}
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switch-track {
+  width: 2.6rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--admin-line);
+  position: relative;
+  transition: background 0.2s;
+}
+.switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 25%);
+  transition: transform 0.2s;
+}
+.switch input:checked + .switch-track {
+  background: var(--admin-ok);
+}
+.switch input:checked + .switch-track::after {
+  transform: translateX(1.1rem);
+}
