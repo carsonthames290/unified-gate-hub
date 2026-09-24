@@ -126,14 +126,18 @@ export function readCookie(cookieHeader: string | null | undefined, name: string
   return undefined;
 }
 
+function cookieAttrs(requestUrl: string): string {
+  // Plain-http localhost can't use SameSite=None; everything else (incl. framed preview) needs it.
+  const isPlainLocal = requestUrl.startsWith("http://") && /\/\/(localhost|127\.0\.0\.1)/.test(requestUrl);
+  return isPlainLocal ? "SameSite=Lax" : "SameSite=None; Secure; Partitioned";
+}
+
 export function sessionSetCookieHeader(value: string, requestUrl: string): string {
-  const secure = requestUrl.startsWith("https://") ? "; Secure" : "";
-  return `${SESSION_COOKIE}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESSION_MAX_AGE}${secure}`;
+  return `${SESSION_COOKIE}=${encodeURIComponent(value)}; Path=/; HttpOnly; ${cookieAttrs(requestUrl)}; Max-Age=${SESSION_MAX_AGE}`;
 }
 
 export function clearSessionCookieHeader(requestUrl: string): string {
-  const secure = requestUrl.startsWith("https://") ? "; Secure" : "";
-  return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
+  return `${SESSION_COOKIE}=; Path=/; HttpOnly; ${cookieAttrs(requestUrl)}; Max-Age=0`;
 }
 
 /* ---------------- session state ---------------- */
