@@ -122,10 +122,10 @@ export async function updateCredential(
   },
 ) {
   const { bumpSession, ...fields } = patch;
-  const update: Record<string, unknown> = { ...fields, updated_at: new Date().toISOString() };
+  const update: Partial<Credential> = { ...fields, updated_at: new Date().toISOString() };
   if (bumpSession) {
     const current = await getCredentialById(id);
-    if (current) update["session_version"] = current.session_version + 1;
+    if (current) update.session_version = current.session_version + 1;
   }
   const { error } = await supabaseAdmin.from("portal_credentials").update(update).eq("id", id);
   if (error) throw error;
