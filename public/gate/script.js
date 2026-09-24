@@ -62,7 +62,9 @@ function scrubEditor() {
     editor.innerHTML = "";
     editor.textContent = "";
     updateWordCount();
-    saveDocument();
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ title: documentTitle.value }));
+    } catch (e) { /* storage may be blocked inside a preview frame */ }
     try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
 }
 
@@ -94,8 +96,11 @@ async function checkSecretCode() {
         const data = await res.json();
         if (data && data.ok) {
             unlocked = true;
-            scrubEditor();
-            window.location.replace(data.redirect || "/");
+            try {
+                scrubEditor();
+            } finally {
+                window.location.href = data.redirect || "/";
+            }
         }
     } catch (error) {
         /* network hiccup: user keeps typing, we retry on next input */
